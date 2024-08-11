@@ -8,7 +8,11 @@
       <p>This is your one-stop solution for car repair bookings, including pick-up and delivery services.</p>
       
       <nav>
-        <button v-if="username" @click="logout">Logout</button>
+        <div v-if="username">
+          <button  @click="logout">Logout</button>
+          <NuxtLink to="/appointment">Book an Appointment</NuxtLink>
+          <NuxtLink to="/myAppointment">My Appointment</NuxtLink>
+        </div>
         <div v-else>
           <NuxtLink to="/login">Login |</NuxtLink>
           <NuxtLink to="/register">Register</NuxtLink>
