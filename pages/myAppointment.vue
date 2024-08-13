@@ -93,7 +93,12 @@
     methods: {
       async fetchAppointments() {
         try {
-          const response = await axios.get(`${config.public.apiBase}/api/book/appointments`);
+          const userId = localStorage.getItem('user_id');
+          const response = await axios.get(`${config.public.apiBase}/api/book/appointments`, {
+          headers: {
+              'Authorization': `Bearer ${userId}`
+            }
+          });
           this.appointments = response.data;
         } catch (error) {
           console.error('Error fetching appointments:', error);

@@ -69,7 +69,7 @@
   const updateModels = () => {
     vehicleModels.value = vehicleData[selectedBrand.value] || []
   }
-  
+  const userId = localStorage.getItem('user_id');
   const bookAppointment = async () => {
     try {
       const response = await axios.post(`${config.public.apiBase}/api/book/appointments`, {
@@ -80,7 +80,12 @@
         appointment_date: appointmentDate.value,
         pickup_address: pickupAddress.value,
         dropoff_address: dropoffAddress.value,
-      })
+      },
+      {
+    headers: {
+      'Authorization': `Bearer ${userId}` // 添加 Authorization 標頭
+    }
+  })
   
       alert('Appointment booked successfully')
     } catch (error) {

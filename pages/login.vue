@@ -35,7 +35,7 @@ const login = async () => {
     })
 
     // Save JWT token and username to localStorage
-    localStorage.setItem('jwt', response.token)
+    localStorage.setItem('jwt', response.data.token)
     localStorage.setItem('username', username.value)
     localStorage.setItem('user_id', response.data.user_id)
 

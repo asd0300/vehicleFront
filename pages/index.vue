@@ -12,6 +12,7 @@
           <button  @click="logout">Logout</button>
           <NuxtLink to="/appointment">Book an Appointment</NuxtLink>
           <NuxtLink to="/myAppointment">My Appointment</NuxtLink>
+          <NuxtLink to="/ownerAppointments">CheckClient's Appointment</NuxtLink>
         </div>
         <div v-else>
           <NuxtLink to="/login">Login |</NuxtLink>
