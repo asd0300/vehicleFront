@@ -2,30 +2,27 @@
   <div>
     <h2>Book an Appointment</h2>
     <el-form @submit.prevent="bookAppointment" label-width="120px">
-      <el-form-item label="Vehicle Brand:">
+      <el-form-item label="Vehicle Brand:" :required="true">
         <el-select v-model="selectedBrand" @change="updateModels" placeholder="Please select a brand">
           <el-option v-for="(models, brand) in vehicleData" :key="brand" :label="brand" :value="brand"/>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="Vehicle Model:">
+      <el-form-item label="Vehicle Model:" :required="true">
         <el-select v-model="vehicleDetails" placeholder="Please select a model" :disabled="!selectedBrand">
           <el-option v-for="model in vehicleModels" :key="model" :label="model" :value="model"/>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="Service Type:">
+      <el-form-item label="Service Type:" :required="true">
         <el-select v-model="serviceType" placeholder="Select service type">
           <el-option label="Maintenance" value="maintenance"/>
           <el-option label="Repair" value="repair"/>
         </el-select>
       </el-form-item>
-
-      <el-form-item label="Appointment Date:">
-        <el-date-picker v-model="appointmentDate" type="date" placeholder="Select date" @change="fetchAvailableSlots"/>
-      </el-form-item>
-
-      <el-form-item v-if="availableSlots.morning.length > 0" label="Morning Slot:">
+      <CalendlyEmbed @date-selected="handleDateSelected" @no-available-data="handleNoAvailableData"/>
+      <p v-if="noAvailableData" style="color: red; font-weight: bold;">No available appointment slots. Please check backend info later.</p>
+      <!-- <el-form-item v-if="availableSlots.morning.length > 0" label="Morning Slot:">
         <el-select v-model="selectedMorningSlot" placeholder="Select a morning slot">
           <el-option v-for="slot in availableSlots.morning" :key="slot" :label="slot" :value="slot"/>
         </el-select>
@@ -35,13 +32,13 @@
         <el-select v-model="selectedAfternoonSlot" placeholder="Select an afternoon slot">
           <el-option v-for="slot in availableSlots.afternoon" :key="slot" :label="slot" :value="slot"/>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
 
-      <el-form-item label="Pickup Address:">
+      <el-form-item label="Pickup Address:" :required="true">
         <el-input v-model="pickupAddress" placeholder="Enter pickup address"/>
       </el-form-item>
 
-      <el-form-item label="Dropoff Address:">
+      <el-form-item label="Dropff Address: " :required="true">
         <el-input v-model="dropoffAddress" placeholder="Enter dropoff address"/>
       </el-form-item>
 
@@ -55,7 +52,6 @@
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
-
 const vehicleData = {
   "Toyota": ["Camry", "Corolla", "Highlander", "RAV4", "Tacoma"],
   "Honda": ["Accord", "Civic", "CR-V", "Pilot", "Odyssey"],
@@ -80,27 +76,26 @@ const availableSlots = ref({ morning: [], afternoon: [] })
 const selectedMorningSlot = ref('')
 const selectedAfternoonSlot = ref('')
 const config = useRuntimeConfig()
+const noAvailableData = ref(false)
+
+const handleDateSelected = (date) =>{
+  appointmentDate.value = date
+}
+
+const handleNoAvailableData= () => {
+  noAvailableData.value = true;
+}
 
 const updateModels = () => {
   vehicleModels.value = vehicleData[selectedBrand.value] || []
 }
 
-const fetchAvailableSlots = async () => {
-  if (!appointmentDate.value) return
-  
-  try {
-    const response = await axios.get(`${config.public.apiBase}/api/book/getAvailableSlots?date=${appointmentDate.value}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-      }
-    })
-    availableSlots.value = response.data
-  } catch (error) {
-    console.error('Error fetching available slots:', error)
-  }
-}
-
 const bookAppointment = async () => {
+  if (!selectedBrand.value || !vehicleDetails.value || !serviceType.value || !appointmentDate.value || 
+      !pickupAddress.value || !dropoffAddress.value) {
+    alert('Please fill in all required fields');
+    return;
+      }
   try {
     const response = await axios.post(`${config.public.apiBase}/api/book/appointments`, {
       vehicle_brand: selectedBrand.value,

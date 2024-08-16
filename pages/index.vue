@@ -17,8 +17,9 @@
             <el-button @click="logout" type="primary">Logout</el-button>
             <el-link :href="'/appointment'">Book an Appointment</el-link>
             <el-link :href="'/myAppointment'">My Appointment</el-link>
-            <el-link :href="'/clientsAppointments'">Check Client's Appointment</el-link>
-            <el-link :href="'/capacity'">Capacity Check</el-link>
+            <el-link v-if="role === 'owner'" :href="'/clientsAppointments'">Check Client's Appointment</el-link>
+            <el-link v-if="role === 'owner'" :href="'/capacity'">Capacity Check</el-link>
+            <el-link v-if="role === 'owner'" :href="'/ownerCapacitySettings'">Calendar Capacity</el-link>
           </div>
           <div v-else>
             <p>Please login to use the system.</p>
@@ -35,12 +36,18 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElAlert, ElButton, ElLink, ElContainer, ElHeader, ElMain, ElRow, ElCol } from 'element-plus'
-
+import {jwtDecode as jwt_decode} from 'jwt-decode';
 const router = useRouter()
 const username = ref('')
+const role = ref("")
 
 onMounted(() => {
-  username.value = localStorage.getItem('username')
+  const token = localStorage.getItem('jwt')
+  if (token) {
+    const decoded = jwt_decode(token);
+    username.value = localStorage.getItem('username')
+    role.value = decoded.role
+  }
 })
 
 function logout() {
