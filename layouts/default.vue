@@ -2,14 +2,19 @@
 <template>
   <div>
     <nav>
-      <NuxtLink v-if="!isHomePage" to="/">Back to Home</NuxtLink>
+      <button @click="goToHome">Back to Home</button>
     </nav>
-    <Nuxt />
+    <NuxtPage />
   </div>
 </template>
 
 <script setup>
 import { useRoute } from 'vue-router'
+import { navigateTo } from '#app'
+
+const goToHome = () => {
+  navigateTo('/')
+}
 
 const route = useRoute()
 const isHomePage = route.path === '/'

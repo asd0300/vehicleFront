@@ -10,10 +10,15 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
     "axios": "^1.7.3",
+    "consola": "^3.0.0",
+    "defu": "^6.1.4",
     "element-plus": "^2.8.0",
     "jwt-decode": "^4.0.0",
-    "nuxt": "^3.12.4",
     "vue": "latest"
+  },
+  "devDependencies": {
+    "nuxt": "^3.12.4"
   }
 }

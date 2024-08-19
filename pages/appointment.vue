@@ -22,18 +22,6 @@
       </el-form-item>
       <CalendlyEmbed @date-selected="handleDateSelected" @no-available-data="handleNoAvailableData"/>
       <p v-if="noAvailableData" style="color: red; font-weight: bold;">No available appointment slots. Please check backend info later.</p>
-      <!-- <el-form-item v-if="availableSlots.morning.length > 0" label="Morning Slot:">
-        <el-select v-model="selectedMorningSlot" placeholder="Select a morning slot">
-          <el-option v-for="slot in availableSlots.morning" :key="slot" :label="slot" :value="slot"/>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item v-if="availableSlots.afternoon.length > 0" label="Afternoon Slot:">
-        <el-select v-model="selectedAfternoonSlot" placeholder="Select an afternoon slot">
-          <el-option v-for="slot in availableSlots.afternoon" :key="slot" :label="slot" :value="slot"/>
-        </el-select>
-      </el-form-item> -->
-
       <el-form-item label="Pickup Address:" :required="true">
         <el-input v-model="pickupAddress" placeholder="Enter pickup address"/>
       </el-form-item>

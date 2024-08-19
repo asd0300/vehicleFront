@@ -24,7 +24,8 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import axios from "axios";
+// import axios from "axios";
+import { useNuxtApp } from '#app';
 
 const selectedDate = ref(null);
 const state = reactive({
@@ -33,9 +34,11 @@ const state = reactive({
 const config = useRuntimeConfig();
 const emit = defineEmits(['date-selected', 'no-available-data']);
 
+const { $axios } = useNuxtApp();
+
 const fetchCalendarData = async () => {
   try {
-    const response = await axios.get(`${config.public.apiBase}/api/calendar`, {
+    const response = await $axios.get(`${config.public.apiBase}/api/calendar`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
       },

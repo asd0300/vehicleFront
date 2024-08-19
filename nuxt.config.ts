@@ -7,5 +7,8 @@ export default defineNuxtConfig({
       apiBase: process.env.API_BASE_URL || 'http://localhost:4000',
     }
   },
-  plugins: ['~/plugins/element-plus']
+  plugins: [
+    '~/plugins/element-plus',
+    '~/plugins/axios.js'
+  ]
 })

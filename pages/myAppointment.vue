@@ -100,7 +100,14 @@ async function deleteAppointment(id) {
     alert('Appointment deleted successfully!')
   } catch (error) {
     console.error('Error deleting appointment:', error)
-    alert('Failed to delete appointment.')
+    let errorMessage = 'Failed to delete appointment.'
+    if (error.response && error.response.data && error.response.data.error) {
+      errorMessage += ` Error: ${error.response.data.error}`
+    } else if (error.message) {
+      errorMessage += ` Error: ${error.message}`
+    }
+    appointments.value = appointments.value.filter(appt => appt.id !== id)
+    alert(errorMessage)
   }
 }
 

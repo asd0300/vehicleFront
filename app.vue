@@ -4,6 +4,6 @@
     <NuxtWelcome /> -->
     <NuxtLayout>
     </NuxtLayout>
-    <NuxtPage />
+    <!-- <NuxtPage /> -->
   </div>
 </template>
