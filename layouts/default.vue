@@ -5,12 +5,14 @@
       <button @click="goToHome">Back to Home</button>
     </nav>
     <NuxtPage />
+    <ChatWidget />
   </div>
 </template>
 
 <script setup>
 import { useRoute } from 'vue-router'
 import { navigateTo } from '#app'
+import ChatWidget from '~/components/ChatWidget.vue'
 
 const goToHome = () => {
   navigateTo('/')

@@ -26,6 +26,7 @@
 import { ref, reactive, onMounted } from "vue";
 // import axios from "axios";
 import { useNuxtApp } from '#app';
+const { $config } = useNuxtApp()
 
 const selectedDate = ref(null);
 const state = reactive({
@@ -52,12 +53,19 @@ const fetchCalendarData = async () => {
 
 const isAvailable = (date) => {
   const day = date.toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T')[0];
+  if(day < today){
+    return false
+  }
   const dayData = state.calendarData.find((item) => item.day === day);
   return dayData && dayData.resdue_appointment > dayData.reserved;
 };
 
 const disabledDate = (time) => {
-  return time.getTime() < Date.now() || !isAvailable(time);
+  if ($config.isClient) {
+    return time.getTime() < Date.now() || !isAvailable(time)
+  }
+  return false
 }
 
 const pickerOptions = ref({

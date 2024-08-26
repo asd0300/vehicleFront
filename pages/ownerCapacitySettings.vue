@@ -49,7 +49,7 @@
   nextWeek.setDate(today.getDate() + 7)
   
   const dateRange = ref([today, nextWeek])
-  const limits = reactive([])  // 使用数组来存储每个日期的限制
+  const limits = reactive([])
   const config = useRuntimeConfig()
   
   const getLimit = (day) => {
@@ -76,7 +76,7 @@
         ...limit,
         resdue_appointment: parseInt(limit.resdue_appointment, 10)
         }))
-      await axios.post(`${config.public.apiBase}/api/calendar/save-limits`, limits, {
+      await axios.post(`${config.public.apiBase}/api/calendar/limits`, limits, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt')}`
         }
@@ -87,6 +87,27 @@
       alert('Failed to save settings.')
     }
   }
+
+  //獲取現有設定
+  const fetchCurrentSettings = async () => {
+    try {
+      const response = await axios.get(`${config.public.apiBase}/api/calendar/limits`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+        }
+      })
+      limits.splice(0, limits.length)
+      response.data.forEach(limit => {
+        limits.push(limit)
+      })
+    } catch (error) {
+      console.error('Failed to fetch current settings:', error)
+      alert('Failed to load current settings.')
+    }
+  }
+  onMounted(() => {
+    fetchCurrentSettings()
+  })
   </script>
   
   <style scoped>

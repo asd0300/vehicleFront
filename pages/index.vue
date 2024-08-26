@@ -18,7 +18,6 @@
             <el-link :href="'/appointment'">Book an Appointment</el-link>
             <el-link :href="'/myAppointment'">My Appointment</el-link>
             <el-link v-if="role === 'owner'" :href="'/clientsAppointments'">Check Client's Appointment</el-link>
-            <el-link v-if="role === 'owner'" :href="'/capacity'">Capacity Check</el-link>
             <el-link v-if="role === 'owner'" :href="'/ownerCapacitySettings'">Calendar Capacity</el-link>
           </div>
           <div v-else>
